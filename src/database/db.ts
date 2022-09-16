@@ -3,7 +3,7 @@ import { Low, JSONFile } from 'lowdb';
 import { fileURLToPath } from 'url'
 import { UserLimit } from '../user/user-limit.js';
 
-class MapJSONDatabase {
+class JSONFileDatabase {
     /**
      * implemented database json db with local file
     */
@@ -33,7 +33,7 @@ class MapJSONDatabase {
  * instance.saveUser(...)
  * ```
  */
-export class EventDatabase extends MapJSONDatabase {
+export class EventDatabase extends JSONFileDatabase {
 
     async isUserExist(userId: string): Promise<boolean> {
         await this.sync();
