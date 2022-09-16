@@ -11,7 +11,8 @@
       "type": "DEPOSIT",
       "progress": "0",
       "userLimitId": "jIcDgFDxkhM2qRWFrwVn",
-      "value": "250000"
+      "value": "250000",
+      "nextResetTime": 1650624490824
     }
   }
 }

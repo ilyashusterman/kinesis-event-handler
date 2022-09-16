@@ -6,19 +6,23 @@ import data from './tests/events.json' assert {type: "json"};
 
 const handler = new EventHandler();
 
+const getEvent = (eventType: EventType): RawEvent<any> => {
+    const eventsFound = data.filter((event) => event.type === eventType);
+    return eventsFound[0]
+}
 const testUserLimitCreated = async () => {
-    const userlimitCreated = data.filter((event) => event.type === EventType.USER_LIMIT_CREATED);
-    const result = await handler.process(userlimitCreated[0]);
+    const event = getEvent(EventType.USER_LIMIT_CREATED);
+    const result = await handler.process(event);
     console.log(result)
 }
 const testUserLimitProgressChanged = async () => {
-    const userlimitCreated = data.filter((event) => event.type === EventType.USER_LIMIT_PROGRESS_CHANGED);
-    const result = await handler.process(userlimitCreated[0]);
+    const event = getEvent(EventType.USER_LIMIT_PROGRESS_CHANGED);
+    const result = await handler.process(event);
     console.log(result)
 }
 const testUserLimitReset = async () => {
-    const userlimitCreated = data.filter((event) => event.type === EventType.USER_LIMIT_RESET);
-    const result = await handler.process(userlimitCreated[0]);
+    const event = getEvent(EventType.USER_LIMIT_RESET);
+    const result = await handler.process(event);
     console.log(result)
 }
 

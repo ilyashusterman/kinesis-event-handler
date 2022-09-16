@@ -1,17 +1,3 @@
-import { LimitStatus, LimitType, LimitPeriod } from "../user/user-limit.js";
-
-export interface EventPayload {
-  activeFrom: number;
-  brandId: string;
-  currencyCode: string;
-  status: LimitStatus,
-  type: LimitType,
-  period: LimitPeriod,
-  value: string;
-  userLimitId: string;
-  userId: string;
-}
-
 export interface EventHandlerResult {
   status: string
 }

@@ -1,6 +1,6 @@
 import { EventDatabase } from "../database/db.js";
 import { UserLimit } from "./user-limit.js";
-import { EventHandlerResult, EventPayload, EventType } from "../event/event-dataclasses.js";
+import { EventHandlerResult, EventType } from "../event/event-dataclasses.js";
 
 
 export class BaseUserLimit {
@@ -10,10 +10,10 @@ export class BaseUserLimit {
     */
     eventType: any = null;
     defaultProgress: string = "0"
-    payload: EventPayload
+    payload: UserLimit
     db: EventDatabase
     rawEventProps: any
-    constructor(db: EventDatabase, payload: EventPayload, rawEventProps: any) {
+    constructor(db: EventDatabase, payload: UserLimit, rawEventProps: any) {
         this.db = db;
         this.payload = payload;
         this.rawEventProps = rawEventProps;
@@ -23,17 +23,9 @@ export class BaseUserLimit {
     }
     getUserLimit(): UserLimit {
         return {
-            activeFrom: this.payload.activeFrom,
             createdAt: this.rawEventProps.createdAt,
-            brandId: this.payload.brandId,
-            currencyCode: this.payload.currencyCode,
-            userId: this.payload.userId,
-            period: this.payload.period,
-            status: this.payload.status,
-            type: this.payload.type,
             progress: this.defaultProgress,
-            userLimitId: this.payload.userLimitId,
-            value: this.payload.value,
+            ...this.payload
         }
     }
     async validateUserExist(message: string) {
