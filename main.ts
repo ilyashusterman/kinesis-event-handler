@@ -1,6 +1,7 @@
 
-import { EventType, RawEvent } from './src/event/event-dataclasses.js';
-import { EventHandler } from './src/event/event-handler.js';
+
+import { EventHandler } from './index.js';
+import { EventType, RawEvent } from './src/event/event.data.classes.js';
 import data from './tests/events.json' assert {type: "json"};
 import { producer as producerMock } from './tests/kinesis.mock.js';
 import { consumer as consumerMock } from './tests/kinesis.mock.js';

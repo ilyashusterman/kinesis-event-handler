@@ -1,8 +1,8 @@
-import { EventHandlerResult } from "../event/event-dataclasses.js";
-import { UserLimit } from "./user-limit.js";
-import { BaseUserLimit, LimitUserBaseProgress } from "./user-limit-base.js";
+import { EventHandlerResult } from "../event/event.data.classes.js";
+import { UserLimit, UserLimitProcessReset, UserLimitProgessChangedModel } from "./user-limit.js";
+import { BaseUserLimitHandler, LimitUserBaseProgressHandler } from "./user-limit-base.js";
 
-export class LimitUserCreated extends BaseUserLimit {
+export class LimitUserCreated extends BaseUserLimitHandler<UserLimit> {
     /*
     Instantiate a new UserLimit on USER_LIMIT_CREATED with correct values
     */
@@ -15,7 +15,11 @@ export class LimitUserCreated extends BaseUserLimit {
         }
         return await this.createUser(userLimit);
     }
-    private async createUser(userLimit: UserLimit) {
+
+    getProgress(): string {
+        return this.defaultProgress
+    }
+    private async createUser(userLimit: UserLimit): Promise<EventHandlerResult> {
         console.log('Creating new UserLimit');
         const status = await this.db.saveUser(userLimit);
         return {
@@ -34,7 +38,7 @@ export class LimitUserCreated extends BaseUserLimit {
 }
 
 
-export class LimitUserProgressChanged extends LimitUserBaseProgress {
+export class LimitUserProgressChanged extends LimitUserBaseProgressHandler<UserLimitProgessChangedModel> {
     getProgress(): string {
         /* not sure which progress to give so generated random value
         * Change UserLimit.progress on USER_LIMIT_PROGRESS_CHANGED
@@ -44,7 +48,7 @@ export class LimitUserProgressChanged extends LimitUserBaseProgress {
     }
 }
 
-export class LimitUserReset extends LimitUserBaseProgress {
+export class LimitUserReset extends LimitUserBaseProgressHandler<UserLimitProcessReset> {
 
     getProgress(): string {
         /*

@@ -1,19 +1,19 @@
 import { EventDatabase } from "../database/db.js";
-import { UserLimit } from "./user-limit.js";
-import { EventHandlerResult, EventType } from "../event/event-dataclasses.js";
+import { EventHandlerResult, EventType } from "../event/event.data.classes.js";
 
 
-export class BaseUserLimit {
+export class BaseUserLimitHandler<EventPayloadType>{
     /* 
     base class logic that will create and keep an updated `UserLimit` entity for user limit,
     based on the interface defined in `user-limit.ts`. via implemented event business logic:
     */
     eventType: any = null;
     defaultProgress: string = "0"
-    payload: UserLimit
+
+    payload: EventPayloadType | any
     db: EventDatabase
     rawEventProps: any
-    constructor(db: EventDatabase, payload: UserLimit, rawEventProps: any) {
+    constructor(db: EventDatabase, payload: EventPayloadType, rawEventProps: any) {
         this.db = db;
         this.payload = payload;
         this.rawEventProps = rawEventProps;
@@ -21,22 +21,21 @@ export class BaseUserLimit {
     handle(): Promise<EventHandlerResult> {
         throw new Error('NotImplemented')
     }
-    getUserLimit(): UserLimit {
+    getUserLimit(): EventPayloadType {
         return {
             createdAt: this.rawEventProps.createdAt,
-            progress: this.defaultProgress,
+            progress: this.getProgress(),
             ...this.payload
         }
     }
-    async validateUserExist(message: string) {
-        const isUserExist = await this.db.isUserExist(this.payload.userId);
-        if (!isUserExist) {
-            throw new Error(message);
-        }
+    getProgress() {
+        throw new Error("Method not implemented.");
     }
 }
 
-export class LimitUserBaseProgress extends BaseUserLimit {
+export class LimitUserBaseProgressHandler<T> extends BaseUserLimitHandler<T> {
+
+
     async handle(): Promise<EventHandlerResult> {
         await this.validateUserExist(
             `UserLimit does not exist, Got event of {"${this.eventType}"} with out ${EventType.USER_LIMIT_CREATED} instanciation`
@@ -48,7 +47,10 @@ export class LimitUserBaseProgress extends BaseUserLimit {
             'status': status
         }
     }
-    getProgress() {
-        throw new Error("Method not implemented.");
+    async validateUserExist(message: string): Promise<void> {
+        const isUserExist = await this.db.isUserExist(this.payload.userId);
+        if (!isUserExist) {
+            throw new Error(message);
+        }
     }
 }

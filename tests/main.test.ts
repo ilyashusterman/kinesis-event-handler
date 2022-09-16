@@ -1,5 +1,5 @@
-import { RawEvent } from "../src/event/event-dataclasses.js";
-import { EventHandler } from "../src/event/event-handler.js";
+import { RawEvent } from "../src/event/event.data.classes.js";
+import { EventHandler } from "../src/event/event.handler.js";
 
 describe('Main Events Flow', () => {
     it('process single event, event LIMIT_USER_CREATED', async () => {

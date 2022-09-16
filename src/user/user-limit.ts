@@ -24,19 +24,39 @@ export enum LimitType {
   SESSION = 'SESSION',
 }
 
-export interface UserLimit {
+export interface BaseUserLimitModel {
+  brandId: string;
+  currencyCode: string;
+  createdAt?: number;
+  nextResetTime?: number;
+  userId: string;
+  userLimitId: string;
+}
+interface UserLimitPeriodEventModel extends BaseUserLimitModel {
+  period: LimitPeriod;
+  type: LimitType;
+}
+
+
+export interface UserLimit extends UserLimitPeriodEventModel {
   activeFrom: number;
   activeUntil?: number;
-  brandId: string;
-  createdAt?: number;
-  currencyCode: string;
-  nextResetTime?: number;
-  period: LimitPeriod;
   previousLimitValue?: string;
   progress?: string;
   status: LimitStatus;
-  type: LimitType;
   userId: string;
-  userLimitId: string;
   value: string;
+}
+
+export interface UserLimitProgessChangedModel extends BaseUserLimitModel {
+  amount: string;
+  previousProgress: string;
+  remainingAmount: string;
+}
+
+export interface UserLimitProcessReset extends UserLimitPeriodEventModel {
+  resetAmount: string;
+  resetPercentage: string;
+  remainingAmount: string;
+  unusedAmount: string;
 }

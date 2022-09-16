@@ -1,5 +1,5 @@
 import { EventDatabase, instance } from "../database/db.js";
-import { RawEvent, EventHandlerResult } from "./event-dataclasses.js";
+import { RawEvent, EventHandlerResult } from "./event.data.classes.js";
 import { USER_LIMIT_IMPLEMENTATIONS } from "../user/user-limit-factory.js";
 import { UserLimit } from "../user/user-limit.js";
 

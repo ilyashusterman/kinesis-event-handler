@@ -1,5 +1,5 @@
 import { EventHandler } from "../index.js";
-import { RawEvent } from "../src/event/event-dataclasses.js";
+import { RawEvent } from "../src/event/event.data.classes.js";
 
 export const consumer = () => {
     const handler = new EventHandler();

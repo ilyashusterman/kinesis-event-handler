@@ -1,5 +1,5 @@
-import { EventType } from "../event/event-dataclasses.js";
-import { LimitUserCreated, LimitUserProgressChanged, LimitUserReset } from "./user-limit-implementaions.js";
+import { EventType } from "../event/event.data.classes.js";
+import { LimitUserCreated, LimitUserProgressChanged, LimitUserReset } from "./user-limit-handlers.js";
 
 
 export interface Dictionary<T> {

@@ -3,7 +3,7 @@ import {
     KinesisStreamEvent,
     KinesisStreamRecordPayload,
 } from 'aws-lambda';
-import { EventHandler } from '../event-handler.js';
+import { EventHandler } from '../event.handler.js';
 
 /**
  * taken from https://github.com/serverless/examples/blob/master/aws-node-typescript-kinesis/kinesis/consumer.ts
