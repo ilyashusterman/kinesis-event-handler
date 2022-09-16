@@ -1,11 +1,15 @@
 import {
     KinesisStreamHandler,
+    KinesisStreamEvent,
     KinesisStreamRecordPayload,
 } from 'aws-lambda';
 import { EventHandler } from '../event-handler.js';
 
-
-const consumer: KinesisStreamHandler = async (event) => {
+/**
+ * taken from https://github.com/serverless/examples/blob/master/aws-node-typescript-kinesis/kinesis/consumer.ts
+ * @param event : KinesisStreamEvent
+ */
+const consumer: KinesisStreamHandler = async (event: KinesisStreamEvent) => {
     /*
     taken from https://github.com/serverless/examples/blob/master/aws-node-typescript-kinesis/kinesis/consumer.ts
     */
@@ -15,7 +19,6 @@ const consumer: KinesisStreamHandler = async (event) => {
             const payload: KinesisStreamRecordPayload = record.kinesis;
             const message: string = Buffer.from(payload.data, 'base64').toString();
 
-            eventHandler.process(payload)
             console.log(
                 `Kinesis Message:
             partition key: ${payload.partitionKey}
@@ -24,7 +27,7 @@ const consumer: KinesisStreamHandler = async (event) => {
             data: ${message}
           `);
             const dataPayload = JSON.parse(message)
-            eventHandler.process({ payload: dataPayload, ...payload })
+            await eventHandler.process({ payload: dataPayload, ...payload })
         }
     } catch (error) {
         console.log(error);

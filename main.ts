@@ -2,6 +2,8 @@
 import { EventType, RawEvent } from './src/event/event-dataclasses.js';
 import { EventHandler } from './src/event/event-handler.js';
 import data from './tests/events.json' assert {type: "json"};
+import { producer as producerMock } from './tests/kinesis.mock.js';
+import { consumer as consumerMock } from './tests/kinesis.mock.js';
 
 
 const handler = new EventHandler();
@@ -26,17 +28,15 @@ const testUserLimitReset = async () => {
     console.log(result)
 }
 
-const testFullIntegration = async () => {
-    const handleEvent = async (event: RawEvent<any>) => await handler.process(event)
-    for (const iterator of data) {
-        await handleEvent(iterator)
-    }
+const testKinesisConsumerProducerMocksEventsJson = async () => {
+    const kinesisMockConsumer = consumerMock();
+    await producerMock(data, kinesisMockConsumer)
 }
 
 const main = () => {
     testUserLimitCreated()
     testUserLimitProgressChanged()
     testUserLimitReset()
-    testFullIntegration()
+    testKinesisConsumerProducerMocksEventsJson()
 }
 main();
