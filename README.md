@@ -5,13 +5,13 @@
 
 # kinesis-event-handler
 
-####Install
+#### Install
 
 `$ npm install`
 or
 `$ yarn install`
 
-####Usage
+#### Usage
 
 ```typescript
 /*
@@ -34,6 +34,6 @@ const handler = new EventHandler();
 await handler.process(load_your_event_here);
 ```
 
-####Testing
+#### Testing
 
 located at `main.ts`.
