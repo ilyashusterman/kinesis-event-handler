@@ -34,17 +34,7 @@ export class LimitUserProgressChanged extends LimitUserBaseProgress {
         * Change UserLimit.progress on USER_LIMIT_PROGRESS_CHANGED
         business logic was not specifed so giving default value of 
         */
-        return `Changed user limit progress ${this.uuidv4()}`
-    }
-    uuidv4() {
-        /*
-        uuid4 random string
-        */
-        /* @ts-ignore */
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
+        return `Changed UserLimit progress at:${this.payload.createdAt}`
     }
 }
 
