@@ -6,7 +6,7 @@ export class LimitUserCreated extends BaseUserLimitHandler<UserLimit> {
     /*
     Instantiate a new UserLimit on USER_LIMIT_CREATED with correct values
     */
-    async handle(): Promise<EventHandlerResult> {
+    async handle(): Promise<EventHandlerResult | Error> {
         let userLimit: UserLimit = this.getUserLimit()
         const isUserExist = await this.db.isUserExist(this.payload.userId);
         if (isUserExist) {
@@ -21,18 +21,18 @@ export class LimitUserCreated extends BaseUserLimitHandler<UserLimit> {
     }
     private async createUser(userLimit: UserLimit): Promise<EventHandlerResult> {
         console.log('Creating new UserLimit');
-        const status = await this.db.saveUser(userLimit);
+        await this.db.saveUser(userLimit);
         return {
-            'status': status
+            'status': `User <${userLimit.userId}> Saved Successfully`
         };
     }
 
     private async updateUser(userLimit: UserLimit): Promise<EventHandlerResult> {
         console.log('UserLimit existing, updating user with corrected values...');
         const { progress, ...updateFieldsMap } = userLimit;
-        const status = await this.db.updateUser(this.payload.userId, updateFieldsMap)
+        await this.db.updateUser(this.payload.userId, updateFieldsMap)
         return {
-            'status': `Updating user ${status}`
+            'status': `Updating user successfully!`
         }
     }
 }

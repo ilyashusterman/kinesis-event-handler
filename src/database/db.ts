@@ -1,7 +1,7 @@
 import { join, dirname } from 'path';
 import { Low, JSONFile } from 'lowdb';
 import { fileURLToPath } from 'url'
-import { UserLimit } from '../user/user-limit.js';
+import { BaseUserLimitModel } from '../user/user-limit.js';
 
 class JSONFileDatabase {
     /**
@@ -22,6 +22,9 @@ class JSONFileDatabase {
         await this.sync();
         return this
     }
+    async saveDB(): Promise<void> {
+        await this.db.write()
+    }
 }
 
 /**
@@ -40,14 +43,14 @@ export class EventDatabase extends JSONFileDatabase {
         /* @ts-ignore */
         return userId in this.db.data.users
     }
-    async saveUser(userLimit: UserLimit) {
+    async saveUser(userLimit: BaseUserLimitModel): Promise<BaseUserLimitModel> {
         await this.sync();
         /* @ts-ignore */
         this.db.data.users[userLimit.userId] = userLimit
-        await this.db.write()
-        return `User <${userLimit.userId}> Saved Successfully`
+        await this.saveDB()
+        return userLimit
     }
-    async getUser(userId: string): Promise<UserLimit | undefined> {
+    async getUser(userId: string): Promise<BaseUserLimitModel | undefined> {
         const isUserExist = await this.isUserExist(userId);
         if (!isUserExist) {
             return undefined
@@ -57,15 +60,15 @@ export class EventDatabase extends JSONFileDatabase {
     }
     async updateUser(userId: string, updateFieldsMap: any) {
         const userLimit = await this.getUser(userId);
-        const newUserLimit: UserLimit = { ...userLimit, ...updateFieldsMap }
+        const newUserLimit: BaseUserLimitModel = { ...userLimit, ...updateFieldsMap }
         return await this.saveUser(newUserLimit)
     }
     async updateUserKeyVal(userId: string, key: string, value: any) {
         await this.sync();
         /* @ts-ignore */
         this.db.data.users[userId][key] = value
-        await this.db.write()
-        return `User <${userId}> updateUserKeyVal Successfully`
+        await this.saveDB()
+        return userId
     }
 }
 

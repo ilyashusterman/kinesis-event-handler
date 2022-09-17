@@ -18,7 +18,7 @@ export class BaseUserLimitHandler<EventPayloadType>{
         this.payload = payload;
         this.rawEventProps = rawEventProps;
     }
-    handle(): Promise<EventHandlerResult> {
+    handle(): Promise<EventHandlerResult | Error> {
         throw new Error('NotImplemented')
     }
     getUserLimit(): EventPayloadType {
@@ -36,15 +36,15 @@ export class BaseUserLimitHandler<EventPayloadType>{
 export class LimitUserBaseProgressHandler<T> extends BaseUserLimitHandler<T> {
 
 
-    async handle(): Promise<EventHandlerResult> {
+    async handle(): Promise<EventHandlerResult | Error> {
         await this.validateUserExist(
             `UserLimit does not exist, Got event of {"${this.eventType}"} with out ${EventType.USER_LIMIT_CREATED} instanciation`
         )
 
         const progress = this.getProgress()
-        const status = await this.db.updateUserKeyVal(this.payload.userId, 'progress', progress)
+        await this.db.updateUserKeyVal(this.payload.userId, 'progress', progress)
         return {
-            'status': status
+            'status': 'Updated User progress successfully'
         }
     }
     async validateUserExist(message: string): Promise<void> {
