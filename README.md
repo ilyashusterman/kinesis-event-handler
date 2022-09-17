@@ -36,4 +36,4 @@ await handler.process(load_your_event_here);
 
 #### Testing
 
-located at `main.ts`.
+`$ yarn start`
